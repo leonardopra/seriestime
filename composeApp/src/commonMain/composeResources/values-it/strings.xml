@@ -15,6 +15,33 @@
     <string name="auth_go_sign_up">Non hai un account? Registrati</string>
     <string name="auth_go_sign_in">Hai già un account? Accedi</string>
 
+    <string name="search_hint">Cerca film e serie</string>
+    <string name="search_no_results">Nessun risultato</string>
+    <string name="search_movie">Film</string>
+    <string name="search_tv">Serie</string>
+
+    <string name="status_watchlist">Da vedere</string>
+    <string name="status_watching">In corso</string>
+    <string name="status_watched">Visti</string>
+    <string name="library_empty">Ancora niente qui. Cerca un titolo da aggiungere!</string>
+
+    <string name="detail_watched">Visto</string>
+    <string name="detail_watchlist">Da vedere</string>
+    <string name="detail_favorite">Preferito</string>
+    <string name="detail_rewatch">Rivisioni: %1$d</string>
+
+    <string name="show_season">Stagione %1$d</string>
+    <string name="show_specials">Speciali</string>
+    <string name="show_mark_season">Segna stagione</string>
+    <string name="show_mark_series">Segna serie come vista</string>
+
+    <string name="import_title">Importa da TVTime</string>
+    <string name="import_pick_files">Scegli i file JSON</string>
+    <string name="import_summary">%1$d film, %2$d serie / %3$d episodi trovati</string>
+    <string name="import_start">Importa</string>
+    <string name="import_dry_run">Prova (senza scrivere)</string>
+    <string name="import_unmatched">Non abbinati:</string>
+
     <string name="settings_signed_in_as">Accesso effettuato come %1$s</string>
     <string name="settings_sign_out">Esci</string>
     <string name="tmdb_attribution">Questo prodotto usa l’API di TMDB ma non è approvato né certificato da TMDB.</string>

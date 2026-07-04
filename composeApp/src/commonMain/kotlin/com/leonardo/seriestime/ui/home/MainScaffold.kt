@@ -1,8 +1,5 @@
 package com.leonardo.seriestime.ui.home
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Movie
@@ -17,10 +14,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.leonardo.seriestime.ui.search.SearchScreen
 import com.leonardo.seriestime.ui.settings.SettingsScreen
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
@@ -38,8 +35,12 @@ private enum class MainTab(val label: StringResource) {
 }
 
 @Composable
-fun MainScaffold() {
-    var selectedTab by remember { mutableStateOf(MainTab.Shows) }
+fun MainScaffold(
+    onOpenMovie: (Int) -> Unit,
+    onOpenShow: (Int) -> Unit,
+    onOpenImport: () -> Unit,
+) {
+    var selectedTab by rememberSaveable { mutableStateOf(MainTab.Shows) }
 
     Scaffold(
         bottomBar = {
@@ -66,14 +67,25 @@ fun MainScaffold() {
         },
     ) { padding ->
         when (selectedTab) {
-            MainTab.Settings -> SettingsScreen(Modifier.padding(padding))
-            else -> Column(
-                modifier = Modifier.fillMaxSize().padding(padding),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(stringResource(selectedTab.label))
-            }
+            MainTab.Shows -> ShowsTab(
+                onOpenShow = onOpenShow,
+                modifier = Modifier.padding(padding),
+            )
+            MainTab.Movies -> MoviesTab(
+                onOpenMovie = onOpenMovie,
+                modifier = Modifier.padding(padding),
+            )
+            MainTab.Search -> SearchScreen(
+                onResultClick = { result ->
+                    if (result.mediaType == "movie") onOpenMovie(result.id)
+                    else onOpenShow(result.id)
+                },
+                modifier = Modifier.padding(padding),
+            )
+            MainTab.Settings -> SettingsScreen(
+                onOpenImport = onOpenImport,
+                modifier = Modifier.padding(padding),
+            )
         }
     }
 }

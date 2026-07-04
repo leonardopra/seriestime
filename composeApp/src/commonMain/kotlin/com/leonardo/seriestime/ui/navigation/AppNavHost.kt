@@ -8,11 +8,31 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.leonardo.seriestime.data.supabase.AuthRepository
 import com.leonardo.seriestime.ui.auth.AuthFlow
 import com.leonardo.seriestime.ui.home.MainScaffold
+import com.leonardo.seriestime.ui.importer.ImportScreen
+import com.leonardo.seriestime.ui.moviedetail.MovieDetailScreen
+import com.leonardo.seriestime.ui.showdetail.ShowDetailScreen
 import io.github.jan.supabase.auth.status.SessionStatus
+import kotlinx.serialization.Serializable
 import org.koin.compose.koinInject
+
+@Serializable
+object TabsRoute
+
+@Serializable
+data class MovieDetailRoute(val tmdbId: Int)
+
+@Serializable
+data class ShowDetailRoute(val tmdbId: Int)
+
+@Serializable
+object ImportRoute
 
 @Composable
 fun AppNavHost() {
@@ -27,8 +47,39 @@ fun AppNavHost() {
             CircularProgressIndicator()
         }
 
-        is SessionStatus.Authenticated -> MainScaffold()
+        is SessionStatus.Authenticated -> AuthenticatedNav()
 
         else -> AuthFlow()
+    }
+}
+
+@Composable
+private fun AuthenticatedNav() {
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = TabsRoute) {
+        composable<TabsRoute> {
+            MainScaffold(
+                onOpenMovie = { navController.navigate(MovieDetailRoute(it)) },
+                onOpenShow = { navController.navigate(ShowDetailRoute(it)) },
+                onOpenImport = { navController.navigate(ImportRoute) },
+            )
+        }
+        composable<ImportRoute> {
+            ImportScreen(onBack = { navController.popBackStack() })
+        }
+        composable<MovieDetailRoute> { entry ->
+            val route = entry.toRoute<MovieDetailRoute>()
+            MovieDetailScreen(
+                tmdbId = route.tmdbId,
+                onBack = { navController.popBackStack() },
+            )
+        }
+        composable<ShowDetailRoute> { entry ->
+            val route = entry.toRoute<ShowDetailRoute>()
+            ShowDetailScreen(
+                tmdbId = route.tmdbId,
+                onBack = { navController.popBackStack() },
+            )
+        }
     }
 }

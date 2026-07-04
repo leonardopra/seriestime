@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
@@ -19,12 +20,14 @@ import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import seriestime.composeapp.generated.resources.Res
+import seriestime.composeapp.generated.resources.import_title
 import seriestime.composeapp.generated.resources.settings_sign_out
 import seriestime.composeapp.generated.resources.settings_signed_in_as
 import seriestime.composeapp.generated.resources.tmdb_attribution
 
 @Composable
 fun SettingsScreen(
+    onOpenImport: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AuthViewModel = koinViewModel(),
 ) {
@@ -43,6 +46,10 @@ fun SettingsScreen(
             style = MaterialTheme.typography.bodyLarge,
         )
         Spacer(Modifier.height(16.dp))
+        Button(onClick = onOpenImport) {
+            Text(stringResource(Res.string.import_title))
+        }
+        Spacer(Modifier.height(8.dp))
         OutlinedButton(onClick = { viewModel.signOut() }) {
             Text(stringResource(Res.string.settings_sign_out))
         }
