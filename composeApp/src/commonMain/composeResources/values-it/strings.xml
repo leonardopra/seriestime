@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">SeriesTime</string>
+    <string name="hello">Tieni traccia di serie e film</string>
+
+    <string name="tab_shows">Serie</string>
+    <string name="tab_movies">Film</string>
+    <string name="tab_search">Cerca</string>
+    <string name="tab_settings">Impostazioni</string>
+</resources>
