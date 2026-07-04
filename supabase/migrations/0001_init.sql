@@ -132,3 +132,12 @@ create policy "own user_episodes" on public.user_episodes
   for all to authenticated
   using (user_id = (select auth.uid()))
   with check (user_id = (select auth.uid()));
+
+-- ============ table-level grants (rows are restricted by RLS) ============
+grant usage on schema public to authenticated;
+grant select, update on public.profiles to authenticated;
+grant select, insert, update on public.shows to authenticated;
+grant select, insert, update on public.movies to authenticated;
+grant select, insert, update, delete on public.user_shows to authenticated;
+grant select, insert, update, delete on public.user_movies to authenticated;
+grant select, insert, update, delete on public.user_episodes to authenticated;

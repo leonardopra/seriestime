@@ -1,3 +1,5 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
+import java.util.Properties
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
@@ -7,6 +9,21 @@ plugins {
     alias(libs.plugins.composeMultiplatform)
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.kotlinSerialization)
+    alias(libs.plugins.buildkonfig)
+}
+
+val localProps = Properties().apply {
+    val f = rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+buildkonfig {
+    packageName = "com.leonardo.seriestime"
+    defaultConfigs {
+        buildConfigField(STRING, "SUPABASE_URL", localProps.getProperty("supabase.url") ?: "")
+        buildConfigField(STRING, "SUPABASE_ANON_KEY", localProps.getProperty("supabase.anonKey") ?: "")
+        buildConfigField(STRING, "TMDB_ACCESS_TOKEN", localProps.getProperty("tmdb.accessToken") ?: "")
+    }
 }
 
 kotlin {
@@ -50,6 +67,15 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
 
             implementation(libs.multiplatform.settings)
+            implementation(libs.multiplatform.settings.noarg)
+
+            implementation(project.dependencies.platform(libs.supabase.bom))
+            implementation(libs.supabase.auth)
+            implementation(libs.supabase.postgrest)
+
+            implementation(libs.ktor.client.core)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -58,6 +84,10 @@ kotlin {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
             implementation(libs.koin.android)
+            implementation(libs.ktor.client.okhttp)
+        }
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
         }
     }
 }

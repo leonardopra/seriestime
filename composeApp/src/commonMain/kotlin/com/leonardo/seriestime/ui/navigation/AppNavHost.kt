@@ -1,44 +1,34 @@
 package com.leonardo.seriestime.ui.navigation
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import kotlinx.serialization.Serializable
-import org.jetbrains.compose.resources.stringResource
-import seriestime.composeapp.generated.resources.Res
-import seriestime.composeapp.generated.resources.app_name
-import seriestime.composeapp.generated.resources.hello
-
-@Serializable
-object HomeRoute
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.leonardo.seriestime.data.supabase.AuthRepository
+import com.leonardo.seriestime.ui.auth.AuthFlow
+import com.leonardo.seriestime.ui.home.MainScaffold
+import io.github.jan.supabase.auth.status.SessionStatus
+import org.koin.compose.koinInject
 
 @Composable
 fun AppNavHost() {
-    val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = HomeRoute) {
-        composable<HomeRoute> {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                Text(
-                    text = stringResource(Res.string.app_name),
-                    style = MaterialTheme.typography.headlineLarge,
-                )
-                Text(
-                    text = stringResource(Res.string.hello),
-                    style = MaterialTheme.typography.bodyLarge,
-                )
-            }
+    val authRepository = koinInject<AuthRepository>()
+    val sessionStatus by authRepository.sessionStatus.collectAsStateWithLifecycle()
+
+    when (sessionStatus) {
+        is SessionStatus.Initializing -> Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center,
+        ) {
+            CircularProgressIndicator()
         }
+
+        is SessionStatus.Authenticated -> MainScaffold()
+
+        else -> AuthFlow()
     }
 }

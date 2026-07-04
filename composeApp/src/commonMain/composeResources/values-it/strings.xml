@@ -6,4 +6,16 @@
     <string name="tab_movies">Film</string>
     <string name="tab_search">Cerca</string>
     <string name="tab_settings">Impostazioni</string>
+
+    <string name="auth_sign_in">Accedi</string>
+    <string name="auth_sign_up">Registrati</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_display_name">Nome</string>
+    <string name="auth_go_sign_up">Non hai un account? Registrati</string>
+    <string name="auth_go_sign_in">Hai già un account? Accedi</string>
+
+    <string name="settings_signed_in_as">Accesso effettuato come %1$s</string>
+    <string name="settings_sign_out">Esci</string>
+    <string name="tmdb_attribution">Questo prodotto usa l’API di TMDB ma non è approvato né certificato da TMDB.</string>
 </resources>

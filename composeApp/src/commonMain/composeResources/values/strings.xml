@@ -6,4 +6,16 @@
     <string name="tab_movies">Movies</string>
     <string name="tab_search">Search</string>
     <string name="tab_settings">Settings</string>
+
+    <string name="auth_sign_in">Sign in</string>
+    <string name="auth_sign_up">Sign up</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_display_name">Name</string>
+    <string name="auth_go_sign_up">No account yet? Sign up</string>
+    <string name="auth_go_sign_in">Already have an account? Sign in</string>
+
+    <string name="settings_signed_in_as">Signed in as %1$s</string>
+    <string name="settings_sign_out">Sign out</string>
+    <string name="tmdb_attribution">This product uses the TMDB API but is not endorsed or certified by TMDB.</string>
 </resources>

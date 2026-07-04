@@ -1,11 +1,18 @@
 package com.leonardo.seriestime.di
 
+import com.leonardo.seriestime.data.supabase.AuthRepository
+import com.leonardo.seriestime.data.supabase.createSupabase
+import com.leonardo.seriestime.ui.auth.AuthViewModel
 import org.koin.core.context.startKoin
+import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.KoinAppDeclaration
 import org.koin.dsl.module
 
 val appModule = module {
-    // repositories and view models are registered here as milestones land
+    single { createSupabase() }
+    single { AuthRepository(get()) }
+
+    viewModel { AuthViewModel(get()) }
 }
 
 fun initKoin(config: KoinAppDeclaration? = null) {
