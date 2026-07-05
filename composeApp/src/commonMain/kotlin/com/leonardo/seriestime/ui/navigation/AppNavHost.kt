@@ -39,6 +39,10 @@ fun AppNavHost() {
     val authRepository = koinInject<AuthRepository>()
     val sessionStatus by authRepository.sessionStatus.collectAsStateWithLifecycle()
 
+    // created once at the top level so the back stack survives any
+    // Initializing/Authenticated branch flips (e.g. token refresh on resume)
+    val navController = rememberNavController()
+
     when (sessionStatus) {
         is SessionStatus.Initializing -> Box(
             modifier = Modifier.fillMaxSize(),
@@ -47,15 +51,14 @@ fun AppNavHost() {
             CircularProgressIndicator()
         }
 
-        is SessionStatus.Authenticated -> AuthenticatedNav()
+        is SessionStatus.Authenticated -> AuthenticatedNav(navController)
 
         else -> AuthFlow()
     }
 }
 
 @Composable
-private fun AuthenticatedNav() {
-    val navController = rememberNavController()
+private fun AuthenticatedNav(navController: androidx.navigation.NavHostController) {
     NavHost(navController = navController, startDestination = TabsRoute) {
         composable<TabsRoute> {
             MainScaffold(

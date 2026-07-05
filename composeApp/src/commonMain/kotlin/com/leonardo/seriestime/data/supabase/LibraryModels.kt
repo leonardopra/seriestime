@@ -35,13 +35,16 @@ enum class ShowStatus {
     @SerialName("watched") Watched,
 }
 
+// NOTE: write-path rows must NOT use default values on non-null columns:
+// kotlinx-serialization omits fields equal to their default (encodeDefaults=false),
+// and PostgREST turns missing keys in a bulk upsert into NULLs.
 @Serializable
 data class UserMovieRow(
     @SerialName("user_id") val userId: String,
     @SerialName("tmdb_id") val tmdbId: Int,
-    @SerialName("is_watched") val isWatched: Boolean = false,
-    @SerialName("is_favorite") val isFavorite: Boolean = false,
-    @SerialName("rewatch_count") val rewatchCount: Int = 0,
+    @SerialName("is_watched") val isWatched: Boolean,
+    @SerialName("is_favorite") val isFavorite: Boolean,
+    @SerialName("rewatch_count") val rewatchCount: Int,
     @SerialName("watched_at") val watchedAt: String? = null,
 )
 
@@ -60,8 +63,8 @@ data class UserMovieWithMovie(
 data class UserShowRow(
     @SerialName("user_id") val userId: String,
     @SerialName("tmdb_id") val tmdbId: Int,
-    val status: ShowStatus = ShowStatus.Watchlist,
-    @SerialName("is_favorite") val isFavorite: Boolean = false,
+    val status: ShowStatus,
+    @SerialName("is_favorite") val isFavorite: Boolean,
 )
 
 @Serializable
@@ -80,5 +83,5 @@ data class UserEpisodeRow(
     @SerialName("season_number") val seasonNumber: Int,
     @SerialName("episode_number") val episodeNumber: Int,
     @SerialName("watched_at") val watchedAt: String? = null,
-    @SerialName("watch_count") val watchCount: Int = 1,
+    @SerialName("watch_count") val watchCount: Int,
 )

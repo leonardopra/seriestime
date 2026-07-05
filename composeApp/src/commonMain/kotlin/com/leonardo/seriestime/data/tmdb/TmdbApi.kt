@@ -28,6 +28,10 @@ class TmdbApi(
     private val client: HttpClient = defaultClient(),
     private val accessToken: String = BuildKonfig.TMDB_ACCESS_TOKEN,
 ) : TmdbLookup {
+    // 32 hex chars = legacy v3 api key (goes in the query string);
+    // anything longer is a v4 read access token (Bearer header)
+    private val isV3Key = accessToken.length == 32 && accessToken.all { it.isDigit() || it in 'a'..'f' }
+
     private val seasonCache = LruCache<String, TmdbSeasonDetails>(maxSize = 64)
     private val tvCache = LruCache<String, TmdbTvDetails>(maxSize = 64)
     private val cacheMutex = Mutex()
@@ -81,7 +85,8 @@ class TmdbApi(
         var attempt = 0
         while (true) {
             val response: HttpResponse = client.get("$BASE_URL/$path") {
-                header(HttpHeaders.Authorization, "Bearer $accessToken")
+                if (isV3Key) parameter("api_key", accessToken)
+                else header(HttpHeaders.Authorization, "Bearer $accessToken")
                 if (language != null) parameter("language", language)
                 extra()
             }

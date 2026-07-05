@@ -180,6 +180,7 @@ class LibraryRepository(private val client: SupabaseClient) {
                 seasonNumber = season,
                 episodeNumber = episode,
                 watchedAt = now(),
+                watchCount = 1,
             )
         )
     }
@@ -211,6 +212,7 @@ class LibraryRepository(private val client: SupabaseClient) {
                     seasonNumber = season,
                     episodeNumber = episode,
                     watchedAt = ts,
+                    watchCount = 1,
                 )
             }
             .chunked(chunkSize)
