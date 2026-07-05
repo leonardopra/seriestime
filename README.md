@@ -1,41 +1,41 @@
 # SeriesTime
 
-App mobile (Android + iOS) per tenere traccia di serie TV e film, in stile TVTime: cosa stai guardando, cosa hai visto e cosa vuoi vedere, con spunta degli episodi e import dei dati da TVTime.
+Mobile app (Android + iOS) to track TV shows and movies, TVTime-style: what you're watching, what you've watched and what you want to watch, with episode check-off and TVTime data import.
 
 ## Stack
 
-- **Kotlin Multiplatform + Compose Multiplatform** — UI condivisa Android/iOS
-- **Supabase** — autenticazione email/password e database Postgres (con Row Level Security)
-- **TMDB** — ricerca e metadati di film e serie (localizzati IT/EN)
+- **Kotlin Multiplatform + Compose Multiplatform** — shared Android/iOS UI
+- **Supabase** — email/password authentication and Postgres database (with Row Level Security)
+- **TMDB** — movie and TV show search and metadata (IT/EN localization)
 
-## Funzionalità
+## Features
 
-- Account personale con sessione persistente
-- Ricerca film e serie su TMDB
-- Liste: da vedere / in corso / visti, preferiti
-- Dettaglio serie con spunta episodi, "segna stagione/serie vista" e conteggio progressi
-- Dettaglio film con visto, preferito e contatore rivisioni
-- Import dell'export JSON di TVTime (matching via ID IMDB/TVDB, report dei non abbinati, riesegubile)
+- Personal account with persistent session
+- Movie and TV show search on TMDB
+- Lists: watchlist / watching / watched, favorites
+- Show detail with episode check-off, "mark season/series watched" and progress counters
+- Movie detail with watched, favorite and rewatch counter
+- TVTime JSON export import (matching via IMDB/TVDB IDs, unmatched report, re-runnable)
 
 ## Setup
 
-1. Crea `local.properties` nella root:
+1. Create `local.properties` in the project root:
 
    ```properties
    sdk.dir=/path/to/Android/sdk
-   supabase.url=...        # URL del progetto Supabase
+   supabase.url=...        # Supabase project URL
    supabase.anonKey=...    # anon key
-   tmdb.accessToken=...    # API key TMDB (v3) o Read Access Token (v4)
+   tmdb.accessToken=...    # TMDB API key (v3) or Read Access Token (v4)
    ```
 
-2. Applica lo schema al database: `supabase/migrations/0001_init.sql` (via `supabase db push` o SQL editor).
+2. Apply the database schema: `supabase/migrations/0001_init.sql` (via `supabase db push` or the SQL editor).
 
 3. Build:
    - **Android**: `./gradlew :composeApp:assembleDebug`
-   - **iOS**: apri `iosApp/iosApp.xcodeproj` in Xcode e avvia (serve Xcode completo)
+   - **iOS**: open `iosApp/iosApp.xcodeproj` in Xcode and run (full Xcode required)
 
-Test: `./gradlew :composeApp:testDebugUnitTest`
+Tests: `./gradlew :composeApp:testDebugUnitTest`
 
 ---
 
-Questo prodotto usa l'API di TMDB ma non è approvato né certificato da TMDB.
+This product uses the TMDB API but is not endorsed or certified by TMDB.
